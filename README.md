@@ -1,6 +1,11 @@
 # T-Reqs HTTP Fuzzer
 T-Reqs (**T**wo **Req**uest**s**) is a grammar-based HTTP Fuzzer written as a part of the paper titled "T-Reqs: HTTP Request Smuggling with Differential Fuzzing".
 
+<p align="center">
+  <img src="logo-treqs.png" />
+</p>
+
+
 ## About
 T-Reqs is for fuzzing HTTP servers by sending mutated HTTP requests with versions 1.1 and earlier. It has three main components: 1) generating inputs, 2) mutating generated inputs and 3) delivering them to the target server(s). 
 
