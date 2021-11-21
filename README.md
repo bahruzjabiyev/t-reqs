@@ -1,10 +1,20 @@
 # T-Reqs HTTP Fuzzer
-T-Reqs (**T**wo **Req**uest**s**) is a grammar-based HTTP Fuzzer written as a part of the paper titled "T-Reqs: HTTP Request Smuggling with Differential Fuzzing".
+T-Reqs (**T**wo **Req**uest**s**) is a grammar-based HTTP Fuzzer written as a part of the [paper](https://bahruz.me/papers/ccs2021treqs.pdf) titled "T-Reqs: HTTP Request Smuggling with Differential Fuzzing" which was presented at [ACM CCS 2021](https://www.sigsac.org/ccs/CCS2021/accepted-papers.html).
 
 <p align="center">
   <img src="logo-treqs.png" />
 </p>
 
+BibTeX of the paper:
+```
+@inproceedings{ccs2021treqs,
+  title={T-Reqs: HTTP Request Smuggling with Differential Fuzzing},
+  author={Jabiyev, Bahruz and Sprecher, Steven and Onarlioglu, Kaan and Kirda, Engin},
+  booktitle={Proceedings of the 2021 ACM SIGSAC Conference on Computer and Communications Security},
+  pages={1805--1820},
+  year={2021}
+}
+```
 
 ## About
 T-Reqs is for fuzzing HTTP servers by sending mutated HTTP requests with versions 1.1 and earlier. It has three main components: 1) generating inputs, 2) mutating generated inputs and 3) delivering them to the target server(s). 
@@ -67,3 +77,6 @@ HTTP Request Smuggling relies on different body parsing behaviors between server
 To analyze the body parsing of servers in response to various mutations in various forms of an HTTP request, we need to have a feedback mechanism installed on those servers to tell us about the body parsing behavior. One way of installing a feedback mechanism on a server, is to run the server in the reverse-proxy mode and have it forward requests to a "feedback provider" script running as a service. This service measures the length of the body in received requests and saves it for comparing it later with other servers.
 
 An example "[feedback provider](../main/code/feedback-server.py)" script is available in this repository. However, this script sends the body length information back in a response assuming that this information is stored on the client side.
+
+## License
+T-Reqs is [licensed](..main/LICENSE) under MIT license.
