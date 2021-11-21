@@ -79,4 +79,4 @@ To analyze the body parsing of servers in response to various mutations in vario
 An example "[feedback provider](../main/code/feedback-server.py)" script is available in this repository. However, this script sends the body length information back in a response assuming that this information is stored on the client side.
 
 ## License
-T-Reqs is [licensed](..main/LICENSE) under MIT license.
+T-Reqs is [licensed](LICENSE) under MIT license.
