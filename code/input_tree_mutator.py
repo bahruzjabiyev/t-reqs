@@ -29,15 +29,12 @@ class Mutator:
                     self.input_initial_state = copy.deepcopy(self.input)
                     self.mutations = []
 
-                num_skip = 0
                 while num_done_mutations < num_mutations:
-                    node_to_mutate = random.choice(list(self.input.nonterminal_node_list.values()))
-                    if node_to_mutate.symbol not in self.symbol_mutation_types:
-                        num_skip += 1
-                        if num_skip > 20:
-                            break
-                        continue
-                    num_skip = 0
+                    node_to_mutate_pool = [node for node in self.input.nonterminal_node_list.values() if node.symbol in self.symbol_mutation_types]
+                    if node_to_mutate_pool == []:
+                        break
+
+                    node_to_mutate = random.choice(node_to_mutate_pool)
         
                     if self.symbol_mutation_types[node_to_mutate.symbol] == 1: #string mutations
                         mutators = [
