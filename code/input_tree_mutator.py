@@ -1,7 +1,7 @@
 import random
 import copy
 from input_tree_node import Node
-from helper_functions import _print_exception
+from helper_functions import _print_exception, random_choose_with_weights
 
 class Mutator:
 
@@ -50,7 +50,7 @@ class Mutator:
                         ]
                         
         
-                    chosen_mutator = random.choice(mutators)
+                    chosen_mutator = random_choose_with_weights(mutators)
                     if self.reproduce_mode:
                         self.mutations.append([chosen_mutator, node_to_mutate, random.getstate()])
                     self.__getattribute__(chosen_mutator)(node_to_mutate, self.verbose)
@@ -86,7 +86,7 @@ class Mutator:
         if s:
             pos = random.randint(0, len(s) - 1)
             #random_character = chr(random.randrange(0, 127))
-            random_character = random.choice(self.char_pool)
+            random_character = random_choose_with_weights(self.char_pool)
             if verbose:
                 print("Inserting character {} at pos {} of {}.".format(repr(random_character), pos, node.symbol))
             else:
@@ -100,7 +100,7 @@ class Mutator:
         if s:
             pos = random.randint(0, len(s) - 1)
             #random_character = chr(random.randrange(0, 127))
-            random_character = random.choice(self.char_pool)
+            random_character = random_choose_with_weights(self.char_pool)
             if verbose:
                 print("Replacing character {} at pos {} with {}.".format(repr(node.symbol), pos, repr(random_character)))
             else:
@@ -128,7 +128,7 @@ class Mutator:
           from the list of symbols"""
         if node.children:
             pos = random.randint(0, len(node.children) - 1)
-            random_symbol = random.choice(self.symbol_pool)
+            random_symbol = random_choose_with_weights(self.symbol_pool)
             random_subtree = self.input.build_tree(Node(random_symbol))
             if verbose:
                 print("Replacing subtree {} under {} with {}.".format(repr(node.children[pos].symbol), repr(node.symbol), repr(random_symbol)))
@@ -146,7 +146,7 @@ class Mutator:
           from the list of symbols"""
         if node.children:
             pos = random.randint(0, len(node.children) - 1)
-            random_symbol = random.choice(self.symbol_pool)
+            random_symbol = random_choose_with_weights(self.symbol_pool)
             random_subtree = self.input.build_tree(Node(random_symbol))
             if verbose:
                 print("Inserting subtree {} at pos {} of {}.".format(repr(random_symbol), pos, repr(node.symbol)))

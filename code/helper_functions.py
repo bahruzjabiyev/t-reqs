@@ -1,6 +1,7 @@
 import sys
 import linecache
 import configargparse
+import random
 
 def _parse_url(url):
     """ This function extracts certain 
@@ -46,3 +47,20 @@ def _parse_args():
     args = parser.parse_args()
 
     return args
+
+def random_choose_with_weights(possible_expansions):
+    probabilities = [0]*len(possible_expansions)
+    for index, expansion in enumerate(possible_expansions):
+        if "prob=" in expansion:
+            probability = expansion[expansion.find("=")+1:expansion.find(")")]
+            probabilities[index] = float(probability)
+
+    probabilities = [(1-sum(probabilities))/probabilities.count(0) if elem == 0 else elem for elem in probabilities]
+
+    chosen_expansion = random.choices(possible_expansions, weights=probabilities)[0]
+    # '(<headers-frame-1><data-frame-1>, opts(prob=0.9))'
+    # for cases where symbol looks like above, trimming is needed
+    if chosen_expansion.startswith('('):
+        chosen_expansion = chosen_expansion.split(',')[0][1:]
+
+    return chosen_expansion

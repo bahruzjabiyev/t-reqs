@@ -1,5 +1,5 @@
 from input_tree_node import Node
-from helper_functions import _parse_url
+from helper_functions import _parse_url, random_choose_with_weights
 import random
 from collections import deque
 import re
@@ -39,7 +39,7 @@ class InputTree:
             current_node = node_queue.pop()
 
             possible_expansions = self.grammar[current_node.symbol]
-            chosen_expansion = random.choice(possible_expansions)
+            chosen_expansion = random_choose_with_weights(possible_expansions)
 
             for symbol in re.split(Node.RE_NONTERMINAL, chosen_expansion):
                 if len(symbol) > 0:
