@@ -8,7 +8,7 @@ class Mutator:
     mutation_types = {0, # tree mutations
                      1} # string mutations
 
-    def __init__(self, symbol_mutation_types, char_pool, symbol_pool, _input, seed=0, min_num_mutations=1, max_num_mutations=4, verbose=False, reproduce_mode = False):
+    def __init__(self, symbol_mutation_types, char_pool, _input, seed=0, min_num_mutations=1, max_num_mutations=4, verbose=False, reproduce_mode = False):
         self.input = _input
         random.seed(seed)
         self.max_num_mutations = max_num_mutations
@@ -17,7 +17,6 @@ class Mutator:
         self.verbose = verbose
         self.mutation_messages = []
         self.symbol_mutation_types = symbol_mutation_types
-        self.symbol_pool = symbol_pool
         self.char_pool = char_pool
 
     def mutate_input(self, source_of_mutations = []):
@@ -128,7 +127,7 @@ class Mutator:
           from the list of symbols"""
         if node.children:
             pos = random.randint(0, len(node.children) - 1)
-            random_symbol = random_choose_with_weights(self.symbol_pool)
+            random_symbol = random.choice([_node.symbol for _node in node.children])
             random_subtree = self.input.build_tree(Node(random_symbol))
             if verbose:
                 print("Replacing subtree {} under {} with {}.".format(repr(node.children[pos].symbol), repr(node.symbol), repr(random_symbol)))
@@ -146,7 +145,7 @@ class Mutator:
           from the list of symbols"""
         if node.children:
             pos = random.randint(0, len(node.children) - 1)
-            random_symbol = random_choose_with_weights(self.symbol_pool)
+            random_symbol = random.choice([_node.symbol for _node in node.children])
             random_subtree = self.input.build_tree(Node(random_symbol))
             if verbose:
                 print("Inserting subtree {} at pos {} of {}.".format(repr(random_symbol), pos, repr(node.symbol)))
