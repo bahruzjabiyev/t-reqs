@@ -123,7 +123,10 @@ class Mutator:
           from the list of symbols"""
         if node.children:
             pos = random.randint(0, len(node.children) - 1)
-            random_symbol = random.choice([_node.symbol for _node in node.children])
+            if hasattr(self.fuzzer, 'symbol_pool'):
+                random_symbol = random_choose_with_weights(self.fuzzer.symbol_pool)
+            else:
+                random_symbol = random.choice([_node.symbol for _node in node.children])
             random_subtree = self.input.build_tree(Node(random_symbol))
             if verbose:
                 print("Replacing subtree {} under {} with {}.".format(repr(node.children[pos].symbol), repr(node.symbol), repr(random_symbol)))
@@ -141,7 +144,10 @@ class Mutator:
           from the list of symbols"""
         if node.children:
             pos = random.randint(0, len(node.children) - 1)
-            random_symbol = random.choice([_node.symbol for _node in node.children])
+            if hasattr(self.fuzzer, 'symbol_pool'):
+                random_symbol = random_choose_with_weights(self.fuzzer.symbol_pool)
+            else:
+                random_symbol = random.choice([_node.symbol for _node in node.children])
             random_subtree = self.input.build_tree(Node(random_symbol))
             if verbose:
                 print("Inserting subtree {} at pos {} of {}.".format(repr(random_symbol), pos, repr(node.symbol)))
