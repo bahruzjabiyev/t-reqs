@@ -1,0 +1,53 @@
+config.grammar = {
+    '<start>':
+      ['<request>'],
+
+    '<request>':
+      ['<base><entity-size-headers><trailer><chunked-body><padding>'],
+
+    '<base>':
+      ['POST /_URI_ HTTP/1.1\r\nHost: _HOST_\r\nConnection:close\r\nX-Request-ID: _REQUEST_ID_\r\n'],
+
+    '<entity-size-headers>':
+      ['<content-length><transfer-encoding>', '<transfer-encoding>'],
+
+    '<content-length>':
+      ['Content-Length: 200\r\n'],
+
+    '<transfer-encoding>':
+      ['Transfer-Encoding: chunked\r\n'],
+
+    '<trailer>':
+      ['Trailer: Content-Length\r\n\r\n', 'Trailer: Transfer-Encoding\r\n\r\n', 'Trailer: Foo\r\n\r\n', '\r\n'],
+
+    '<chunked-body>':
+      ['<chunk><last-chunk><newline>', '<chunk><last-chunk><trailer-part><newline>'],
+
+    '<chunk>':
+      ['<chunk-size><chunk-extension><newline><chunk-data><newline>', '<chunk-size><newline><chunk-data><newline>'],
+
+    '<chunk-size>':
+      ['4'],
+
+    '<chunk-extension>':
+      [';foo=bar'],
+
+    '<chunk-data>':
+      ['BBBB'],
+
+    '<last-chunk>':
+      ['<zero><chunk-extension><newline>', '<zero><newline>'],
+
+    '<zero>':
+      ['0'],
+
+    '<trailer-part>':
+      ['Transfer-Encoding: chunked\r\n', 'Transfer-Encoding: identity\r\n', 'Content-Length: 180\r\n', 'Bar: Foo\r\n'],
+
+    '<newline>':
+      ['\r\n'],
+
+    '<padding>':
+      ['D' * 200],
+}
+

@@ -1,0 +1,330 @@
+config.grammar = {
+      '<start>':
+        ['<request>'],
+
+      '<request>':
+        ['<method-name><request-uri><http-version><base><entity-size-header><some-header><some-header><body>'],
+
+      '<request-uri>':
+        [' /_URI_ '],
+
+      '<http-version>':
+        ['HTTP/0.9', 'HTTP/1.0', 'HTTP/1.1'],
+
+      '<method-name>':
+        ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE' ],
+
+      '<base>':
+        ['\r\nHost: _HOST_\r\nConnection:close\r\nX-Request-ID: _REQUEST_ID_\r\n'],
+
+      '<entity-size-header>':
+        ['<content-length>', '<chunked-transfer-encoding>', '<content-length><chunked-transfer-encoding>', '<chunked-transfer-encoding><content-length>'],
+  
+      '<some-header>':
+        ['<accept>', '<accept-charset>', '<accept-encoding>', '<accept-language>', '<accept-ranges>', '<allow>', '<alpn>', '<alt-used>', '<authorization>', '<cache-control>', '<caldav-timezones>', '<cdn-loop>', '<content-encoding>', '<content-language>', '<content-length>', '<content-location>', '<cookie>', '<date>', '<depth>', '<destination>', '<early-data>', '<expect>', '<expires>', '<forwarded>', '<from>', '<http2-settings>', '<if>', '<if-match>', '<if-modified-since>', '<if-none-match>', '<if-range>', '<if-schedule-tag-match>', '<if-unmodified-since>', '<link>', '<max-forwards>', '<mime-version>', '<odata-isolation>', '<odata-maxversion>', '<odata-version>', '<ordering-type>', '<origin>', '<oscore>', '<overwrite>', '<position>', '<pragma>', '<prefer>', '<proxy-authorization>', '<range>', '<referer>', '<schedule-reply>', '<sec-token-binding>', '<sec-websocket-accept>', '<sec-websocket-extensions>', '<sec-websocket-key>', '<sec-websocket-protocol>', '<sec-websocket-version>', '<slug>', '<te>', '<timeout>', '<topic>', '<trailer>', '<transfer-encoding>', '<ttl>', '<urgency>', '<upgrade>', '<user-agent>', '<via>'],
+
+      '<newline>':
+        ['\r\n'],
+
+            '<body>':
+                ['\r\nA\r\nBBBBBBBBBB\r\n0\r\n\r\n' + 100*'B'],
+    
+      '<comma>': [','],
+      '<colon>': [':'],
+      '<semicolon>': [';'],
+      '<space>': [' '],
+      '<start-tag>': ['<'],
+      '<end-tag>': ['>'],
+      '<start-parenthesis>': ['('],
+      '<end-parenthesis>': [')'],
+      '<equals>': ['='],
+      '<boolean>': ['T', 'F'],
+      '<quality>': ['q=1.0', 'q=0.0'],
+
+      '<chunked-transfer-encoding>': ['<transfer-encoding-header-name><colon><chunked-encoding><newline>'], 
+        '<chunked-encoding>' : ['chunked'],
+
+      '<accept>': ['<accept-header-name><colon><accept-types><newline>'],
+        '<accept-header-name>': ['Accept'],
+        '<accept-types>': ['<accept-type>', '<accept-type><comma><accept-type>'],
+        '<accept-type>': ['<mime-type-subtype><semicolon><quality>'],
+        '<mime-type-subtype>': ['*/*', 'application/octet-stream', 'application/pdf', 'application/pkcs8', 'application/zip', 'audio/mpeg', 'audio/vorbis', 'audio/example', 'font/woff', 'font/ttf', 'font/otf', 'image/jpeg', 'image/png', 'image/svg+xml', 'model/3mf', 'text/html', 'video/mp4'],
+
+      '<accept-charset>': ['<accept-charset-header-name><colon><charsets><newline>'],
+        '<accept-charset-header-name>': ['Accept-Charset'],
+        '<charsets>': ['<charset>', '<charset><comma><charset>'],
+        '<charset>': ['<charset-name><semicolon><quality>'],
+        '<charset-name>': ['utf-16', 'utf-16BE', 'utf-32', 'utf-32BE', 'us-ascii', 'iso-8859-1', 'utf-7', 'utf-8'],
+        
+      '<accept-encoding>': ['<accept-encoding-header-name><colon><encodings><newline>'],
+        '<accept-encoding-header-name>': ['Accept-Encoding'],
+        '<encodings>': ['<encoding>', '<encoding><comma><encoding>'],
+        '<encoding>': ['<encoding-name><semicolon><quality>'],
+        '<encoding-name>': ['gzip', 'compress', 'deflate', 'br', 'identity', 'chunked'],
+
+      '<accept-language>': ['<accept-language-header-name><colon><languages><newline>'],
+        '<accept-language-header-name>': ['Accept-Language'],
+        '<languages>': ['<language>', '<language><comma><language>'],
+        '<language>': ['<language-name><semicolon><quality>'],
+        '<language-name>': ['fr', 'en', 'de'],
+
+      '<accept-ranges>': ['<accept-ranges-header-name><colon><range-unit><newline>'],
+        '<accept-ranges-header-name>': ['Accept-Ranges'],
+        '<range-unit>': ['bytes', 'none'],
+
+      '<allow>': ['<allow-header-name><colon><method-names><newline>'],
+        '<allow-header-name>': ['Allow'],
+        '<method-names>': ['<method-name>', '<method-name><comma><method-name>'],
+
+      '<alpn>': ['<alpn-header-name><colon><protocol-ids><newline>'],
+        '<alpn-header-name>': ['ALPN'],
+        '<protocol-ids>': ['<protocol-id>', '<protocol-id><comma><protocol-id>'],
+        '<protocol-id>': ['http%2F1.1', 'h2'],
+
+      '<alt-used>': ['<alt-used-header-name><colon><alt-svc><newline>'],
+        '<alt-used-header-name>': ['Alt-Used'],
+        '<alt-svc>' : ['alternate.example.net'],
+
+      '<authorization>': ['<authorization-header-name><colon><auth-scheme><space><creds><newline>'],
+        '<authorization-header-name>': ['Authorization'],
+        '<auth-scheme>' : ['Basic', 'Bearer','Digest','HOBA','Mutual','Negotiate','OAuth','SCRAM-SHA-1','SCRAM-SHA-256','vapid'],
+        '<creds>': ['123456', 'YWxhZGRpbjpvcGVuc2VzYW1l'],
+
+      '<cache-control>': ['<cache-control-header-name><colon><cache-directives><newline>'],
+        '<cache-control-header-name>': ['Cache-Control'],
+        '<cache-directives>': ['<cache-directive>', '<cache-directive><comma><cache-directive>'],
+        '<cache-directive>' : ['max-age=5', 'max-stale=5', 'min-fresh=5', 'no-cache', 'no-store', 'no-transform', 'only-if-cached'],
+
+      '<caldav-timezones>': ['<caldav-timezones-header-name><colon><boolean><newline>'],
+        '<caldav-timezones-header-name>': ['CalDav-Timezones'],
+
+      '<cdn-loop>': ['<cdn-loop-header-name><colon><cdn-infos><newline>'],
+        '<cdn-loop-header-name>': ['CDN-Loop'],
+        '<cdn-infos>': ['<cdn-info>', '<cdn-info><comma><cdn-info>'],
+        '<cdn-info>' : ['foo123.foocdn.example', 'barcdn.example; trace="abcdef"', 'AnotherCDN; abc=123; def="456"'],
+
+
+      '<content-encoding>': ['<content-encoding-header-name><colon><transfer-encodings><newline>'],
+        '<content-encoding-header-name>': ['Content-Encoding'],
+
+      '<content-language>': ['<content-language-header-name><colon><languages><newline>'],
+        '<content-language-header-name>': ['Content-Language'],
+
+      '<content-length>': ['<content-length-header-name><colon><content-length-value><newline>'],
+        '<content-length-header-name>': ['Content-Length'],
+        '<content-length-value>': ['40', '60', '80'],
+
+      '<content-location>': ['<content-location-header-name><colon><content-location-value><newline>'],
+        '<content-location-header-name>': ['Content-Location'],
+        '<content-location-value>': ['<absolute-uri>', '<relative-uri>'],
+        '<absolute-uri>' : ['http://example.com/example'], 
+        '<relative-uri>': ['/example'],
+
+
+      '<cookie>': ['<cookie-header-name><colon><cookie-value><newline>'],
+        '<cookie-header-name>': ['Cookie'],
+        '<cookie-value>' : ['SID=31d4d96e407aad42', 'PHPSESSID=298zf09hf012fh2; csrftoken=u32t4o3tb3gg43; _gat=1'],
+
+      '<date>': ['<date-header-name><colon><date-value><newline>'],
+        '<date-header-name>': ['Date'],
+        '<date-value>' : ['Sun, 06 Nov 1994 08:49:37 GMT', 'Sun, 06 Nov 2094 08:49:37 GMT'],
+
+      '<depth>': ['<depth-header-name><colon><depth-value><newline>'],
+        '<depth-header-name>': ['Depth'],
+        '<depth-value>' : ['0', '1', 'infinity'],
+
+      '<destination>': ['<destination-header-name><colon><absolute-uri><newline>'],
+        '<destination-header-name>': ['Destination'],
+
+      '<early-data>': ['<early-data-header-name><colon><early-data-value><newline>'],
+        '<early-data-header-name>': ['Early-Data'],
+        '<early-data-value>' : ['1'],
+
+      '<expect>': ['<expect-header-name><colon><expect-value><newline>'],
+        '<expect-header-name>': ['Expect'],
+        '<expect-value>' : ['100-continue'],
+
+      '<expires>': ['<expires-header-name><colon><date-value><newline>'],
+        '<expires-header-name>': ['Expires'],
+
+      '<forwarded>': ['<forwarded-header-name><colon><by><space><absolute-uri><newline>'],
+        '<forwarded-header-name>': ['Forwarded'],
+        '<by>': ['by'],
+
+      '<from>': ['<from-header-name><colon><mailbox><newline>'],
+        '<from-header-name>': ['From'],
+        '<mailbox>': ['webmaster@w3.org'],
+
+      '<http2-settings>': ['<http2-settings-header-name><colon><setting><newline>'],
+        '<http2-settings-header-name>': ['HTTP2-Settings'],
+        '<setting>': ['AAMAAABkAARAAAAAAAIAAAAA'],
+
+      '<if>': ['<if-header-name><colon><tag-list><newline>'],
+        '<if-header-name>': ['If'],
+        '<urn-tag>': ['<start-tag><urn-value><end-tag>'],
+        '<urn-value>': ['urn:uuid:181d4fae-7d8c-11d0-a765-00a0c91e6bf2', 'urn:uuid:58f202ac-22cf-11d1-b12d-002035b29092'],
+        '<tag-list>' : ['<start-parenthesis><urn-tag><end-parenthesis>'],
+
+        #'<tag-list>': ['(<urn:uuid:181d4fae-7d8c-11d0-a765-00a0c91e6bf2> ["I am an ETag"]) (["I am another ETag"])', '(Not <urn:uuid:181d4fae-7d8c-11d0-a765-00a0c91e6bf2><urn:uuid:58f202ac-22cf-11d1-b12d-002035b29092>)'],
+
+      '<if-match>': ['<if-match-header-name><colon><entity-tags><newline>'],
+        '<if-match-header-name>': ['If-Match'],
+        '<entity-tags>': ['<entity-tag>', '<entity-tag><comma><entity-tag>'],
+        '<entity-tag>' : ['*', '"xyzzy"'],
+
+      '<if-modified-since>': ['<if-modified-since-header-name><colon><date-value><newline>'],
+        '<if-modified-since-header-name>': ['If-Modified-Since'],
+
+      '<if-none-match>': ['<if-none-match-header-name><colon><entity-tags><newline>'],
+        '<if-none-match-header-name>': ['If-None-Match'],
+
+      '<if-range>': ['<if-range-header-name><colon><if-range-value><newline>'],
+        '<if-range-header-name>': ['If-Range'],
+        '<if-range-value>': ['<entity-tag>', '<date-value>'],
+
+      '<if-schedule-tag-match>': ['<if-schedule-tag-match-header-name><colon><entity-tag><newline>'],
+        '<if-schedule-tag-match-header-name>': ['If-Schedule-Tag-Match'],
+
+      '<if-unmodified-since>': ['<if-unmodified-since-header-name><colon><date-value><newline>'],
+        '<if-unmodified-since-header-name>': ['If-Unmodified-Since'],
+
+      '<link>': ['<link-header-name><colon><link-value><newline>'],
+        '<link-header-name>': ['Link'],
+        '<link-value>': ['<start-tag><absolute-uri><end-tag>'],
+
+      '<max-forwards>': ['<max-forwards-header-name><colon><max-forwards-value><newline>'],
+        '<max-forwards-header-name>': ['Max-Forwards'],
+        '<max-forwards-value>' : ['0', '1'],
+
+      '<mime-version>': ['<mime-version-header-name><colon><mime-version-value><newline>'],
+        '<mime-version-header-name>': ['MIME-Version'],
+        '<mime-version-value>' : ['1.0', '1.1'],
+
+      '<odata-isolation>': ['<odata-isolation-header-name><colon><odata-isolation-value><newline>'],
+        '<odata-isolation-header-name>': ['OData-Isolation'],
+        '<odata-isolation-value>' : ['snapshot'],
+
+      '<odata-maxversion>': ['<odata-maxversion-header-name><colon><odata-version-value><newline>'],
+        '<odata-maxversion-header-name>': ['OData-MaxVersion'],
+        '<odata-version-value>' : ['4.0'],
+
+      '<odata-version>': ['<odata-version-header-name><colon><odata-version-value><newline>'],
+        '<odata-version-header-name>': ['OData-Version'],
+
+      '<ordering-type>': ['<ordering-type-header-name><colon><ordering-type-value><newline>'],
+        '<ordering-type-header-name>': ['Ordering-Type'],
+        '<ordering-type-value>': ['DAV:unordered', 'DAV:custom', 'http://example.org/example.html'],
+
+      '<origin>': ['<origin-header-name><colon><origin-value><newline>'],
+        '<origin-header-name>': ['Origin'],
+        '<origin-value>': ['http://example.com', 'null'],
+
+      '<oscore>': ['<oscore-header-name><colon><oscore-value><newline>'],
+        '<oscore-header-name>': ['OSCORE'],
+        '<oscore-value>': ['CSU', 'AA'],
+
+      '<overwrite>': ['<overwrite-header-name><colon><boolean><newline>'],
+        '<overwrite-header-name>': ['Overwrite'],
+
+      '<position>': ['<position-header-name><colon><position-value><newline>'],
+        '<position-header-name>': ['Position'],
+        '<position-value>' : ['first', 'last', 'after example.html'],
+
+      '<pragma>': ['<pragma-header-name><colon><pragma-directive><newline>'],
+        '<pragma-header-name>': ['Pragma'],
+        '<pragma-directive>' : ['no-cache'],
+
+      '<prefer>': ['<prefer-header-name><colon><preferences><newline>'],
+        '<prefer-header-name>': ['Prefer'],
+        '<preferences>': ['<preference>', '<preference><comma><preference>'],
+        '<preference>' : ['respond-async', 'wait=100', 'handling=lenient'],
+
+      '<proxy-authorization>': ['<proxy-authorization-header-name><colon><auth-scheme><space><creds><newline>'],
+        '<proxy-authorization-header-name>': ['Proxy-Authorization'],
+
+      '<range>': ['<range-header-name><colon><range-unit><equals><range-value><newline>'],
+        '<range-header-name>': ['Range'],
+        '<range-value>': ['5-8', '5-'],
+
+      '<referer>': ['<referer-header-name><colon><absolute-uri><newline>'],
+        '<referer-header-name>': ['Referer'],
+
+      '<schedule-reply>': ['<schedule-reply-header-name><colon><boolean><newline>'],
+        '<schedule-reply-header-name>': ['Schedule-Reply'],
+
+      '<sec-token-binding>': ['<sec-token-binding-header-name><colon><sec-token-binding-value><newline>'],
+        '<sec-token-binding-header-name>': ['Sec-Token-Binding'],
+        '<sec-token-binding-value>': ['AIkAAgBBQLgtRpWFPN66kxhxGrtaKrzcMtHw7HV8'],
+
+      '<sec-websocket-accept>': ['<sec-websocket-accept-header-name><colon><sec-websocket-accept-value><newline>'],
+        '<sec-websocket-accept-header-name>': ['Sec-Websocket-Accept'],
+        '<sec-websocket-accept-value>': ['s3pPLMBiTxaQ9kYGzzhZRbK+xOo='],
+
+      '<sec-websocket-extensions>': ['<sec-websocket-extensions-header-name><colon><sec-websocket-extensions-values><newline>'],
+        '<sec-websocket-extensions-header-name>': ['Sec-Websocket-Extensions'],
+        '<sec-websocket-extensions-values>': ['<sec-websocket-extensions-value>', '<sec-websocket-extensions-value><comma><sec-websocket-extensions-value>'],
+        '<sec-websocket-extensions-value>': ['deflate-stream', 'mux', 'max-channels:4; flow-control'],
+
+      '<sec-websocket-key>': ['<sec-websocket-key-header-name><colon><sec-websocket-key-value><newline>'],
+        '<sec-websocket-key-header-name>': ['Sec-Websocket-Key'],
+        '<sec-websocket-key-value>': ['dGhlIHNhbXBsZSBub25jZQ=='],
+
+      '<sec-websocket-protocol>': ['<sec-websocket-protocol-header-name><colon><sec-websocket-protocol-values><newline>'],
+        '<sec-websocket-protocol-header-name>': ['Sec-Websocket-Protocol'],
+        '<sec-websocket-protocol-values>': ['<sec-websocket-protocol-value>', '<sec-websocket-protocol-value><comma><sec-websocket-protocol-value>'],
+        '<sec-websocket-protocol-value>': ['chat', 'superchat'],
+
+      '<sec-websocket-version>': ['<sec-websocket-version-header-name><colon><sec-websocket-version-value><newline>'],
+        '<sec-websocket-version-header-name>': ['Sec-Websocket-Version'],
+        '<sec-websocket-version-value>': ['13'],
+
+      '<slug>': ['<slug-header-name><colon><slug-value><newline>'],
+        '<slug-header-name>': ['Slug'],
+        '<slug-value>': ['The Beach at S%C3%A8te'],
+
+      '<te>': ['<te-header-name><colon><te-encodings><newline>'],
+        '<te-header-name>': ['TE'],
+        '<te-encodings>': ['<te-encoding>', '<te-encoding><comma><te-encoding>'],
+        '<te-encoding>': ['<te-encoding-name><semicolon><quality>'],
+        '<te-encoding-name>': ['gzip', 'compress', 'deflate', 'br', 'identity', 'chunked', 'trailers'],
+
+      '<timeout>': ['<timeout-header-name><colon><timeout-values><newline>'],
+        '<timeout-header-name>': ['Timeout'],
+        '<timeout-values>': ['<timeout-value>', '<timeout-value><comma><timeout-value>'],
+        '<timeout-value>': ['Infinite', 'Second-4100000000'],
+      
+      '<topic>': ['<topic-header-name><colon><topic-value><newline>'],
+        '<topic-header-name>': ['Topic'],
+        '<topic-value>': ['upd'],
+
+      '<trailer>': ['<trailer-header-name><colon><trailer-value><newline>'],
+        '<trailer-header-name>': ['Trailer'],
+        '<trailer-value>': ['Expires'],
+
+      '<transfer-encoding>': ['<transfer-encoding-header-name><colon><transfer-encodings><newline>'],
+        '<transfer-encoding-header-name>': ['Transfer-Encoding'],
+        '<transfer-encodings>': ['<encoding-name>', '<encoding-name><comma><encoding-name>'],
+
+      '<ttl>': ['<ttl-header-name><colon><ttl-value><newline>'],
+        '<ttl-header-name>': ['TTL'],
+        '<ttl-value>': ['0', '1'],
+
+      '<urgency>': ['<urgency-header-name><colon><urgency-value><newline>'],
+        '<urgency-header-name>': ['Urgency'],
+        '<urgency-value>': ['very-low', 'low', 'normal', 'high'],
+
+      '<upgrade>': ['<upgrade-header-name><colon><upgrade-values><newline>'],
+        '<upgrade-header-name>': ['Upgrade'],
+        '<upgrade-values>': ['<upgrade-value>', '<upgrade-value><comma><upgrade-value>'],
+        '<upgrade-value>': ['websocket', 'HTTP/2.0', 'SHTTP/1.3', 'IRC/6.9', 'RTA/x11'],
+
+      '<user-agent>': ['<user-agent-header-name><colon><user-agent-value><newline>'],
+        '<user-agent-header-name>': ['User-Agent'],
+        '<user-agent-value>': ['curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3'],
+
+      '<via>': ['<via-header-name><colon><via-values><newline>'],
+        '<via-header-name>': ['Via'],
+        '<via-values>': ['<via-value>', '<via-value><comma><via-value>'],
+        '<via-value>': ['1.0 fred', '1.1 p.example.net'],
+}
+

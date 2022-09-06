@@ -1,0 +1,38 @@
+config.grammar = {
+    '<start>':
+      ['<request>'],
+
+    '<request>':
+      ['<request-line><base><the-rest>'],
+
+    '<request-line>':
+      ['<method-name><space><uri><space><protocol><separator><version><newline>'],
+
+    '<method-name>':
+      ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH'],
+
+    '<space>':
+      [' '],
+
+    '<uri>':
+      ['/_URI_'],
+
+    '<protocol>':
+      ['HTTP'],
+
+    '<separator>':
+      ['/'],
+
+    '<version>':
+      ['0.9', '1.0', '1.1', '2.0', '3.0'],
+
+    '<newline>':
+      ['\r\n'],
+
+    '<base>':
+      ['Host: _HOST_\r\nConnection:close\r\nX-Request-ID: _REQUEST_ID_\r\n'],
+
+    '<the-rest>':
+      ['Content-Length: 5\r\n\r\nBBBBB'],
+}
+
