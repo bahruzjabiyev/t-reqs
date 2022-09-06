@@ -137,7 +137,7 @@ class Fuzzer:
             base_input = InputTree(self.grammar, seed, "http://hostname/uri", False)
             base_input.build_tree(base_input.root)
 
-            mutator = Mutator(self.symbol_mutation_types, self.char_pool, base_input, seed, self.min_num_mutations, self.max_num_mutations, self.verbose)
+            mutator = Mutator(self, base_input, seed)
             mutator.mutate_input()
             responses = self.get_responses(seed, base_input)
             responses_list.append("{} ***** {} ***** {} ***** {}".format(seed, base_input.tree_to_request(), responses, mutator.mutation_messages))
@@ -150,7 +150,7 @@ class Fuzzer:
             base_input = InputTree(self.grammar, seed, "http://hostname/uri", False)
             base_input.build_tree(base_input.root)
 
-            mutator = Mutator(self.symbol_mutation_types, self.char_pool, base_input, seed, self.min_num_mutations, self.max_num_mutations, self.verbose)
+            mutator = Mutator(self, base_input, seed)
             mutator.mutate_input()
             responses = self.get_responses(seed, base_input)
             responses_list.append("{} ***** {} ***** {} ***** {}".format(seed, base_input.tree_to_request(), responses, mutator.mutation_messages))

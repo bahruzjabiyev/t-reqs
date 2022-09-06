@@ -8,40 +8,36 @@ class Mutator:
     mutation_types = {0, # tree mutations
                      1} # string mutations
 
-    def __init__(self, symbol_mutation_types, char_pool, _input, seed=0, min_num_mutations=1, max_num_mutations=4, verbose=False, reproduce_mode = False):
+    def __init__(self, fuzzer, _input, seed=0, reproduce_mode = False):
+        self.fuzzer = fuzzer
         self.input = _input
         random.seed(seed)
-        self.max_num_mutations = max_num_mutations
-        self.min_num_mutations = min_num_mutations
         self.reproduce_mode = reproduce_mode
-        self.verbose = verbose
         self.mutation_messages = []
-        self.symbol_mutation_types = symbol_mutation_types
-        self.char_pool = char_pool
 
     def mutate_input(self, source_of_mutations = []):
         try:
             if source_of_mutations == []:
-                num_mutations = random.randint(self.min_num_mutations, self.max_num_mutations)
+                num_mutations = random.randint(self.fuzzer.min_num_mutations, self.fuzzer.max_num_mutations)
                 num_done_mutations = 0
                 if self.reproduce_mode:
                     self.input_initial_state = copy.deepcopy(self.input)
                     self.mutations = []
 
                 while num_done_mutations < num_mutations:
-                    node_to_mutate_pool = [node for node in self.input.nonterminal_node_list.values() if node.symbol in self.symbol_mutation_types]
+                    node_to_mutate_pool = [node for node in self.input.nonterminal_node_list.values() if node.symbol in self.fuzzer.symbol_mutation_types]
                     if node_to_mutate_pool == []:
                         break
 
                     node_to_mutate = random.choice(node_to_mutate_pool)
         
-                    if self.symbol_mutation_types[node_to_mutate.symbol] == 1: #string mutations
+                    if self.fuzzer.symbol_mutation_types[node_to_mutate.symbol] == 1: #string mutations
                         mutators = [
                             'remove_random_character',
                             'replace_random_character',
                             'insert_random_character',
                         ]
-                    if self.symbol_mutation_types[node_to_mutate.symbol] == 0:
+                    if self.fuzzer.symbol_mutation_types[node_to_mutate.symbol] == 0:
                         mutators = [
                             'remove_random_subtree',
                             'replace_random_subtree',
@@ -52,7 +48,7 @@ class Mutator:
                     chosen_mutator = random_choose_with_weights(mutators)
                     if self.reproduce_mode:
                         self.mutations.append([chosen_mutator, node_to_mutate, random.getstate()])
-                    self.__getattribute__(chosen_mutator)(node_to_mutate, self.verbose)
+                    self.__getattribute__(chosen_mutator)(node_to_mutate, self.fuzzer.verbose)
                 
                     num_done_mutations += 1
 
@@ -85,7 +81,7 @@ class Mutator:
         if s:
             pos = random.randint(0, len(s) - 1)
             #random_character = chr(random.randrange(0, 127))
-            random_character = random_choose_with_weights(self.char_pool)
+            random_character = random_choose_with_weights(self.fuzzer.char_pool)
             if verbose:
                 print("Inserting character {} at pos {} of {}.".format(repr(random_character), pos, node.symbol))
             else:
@@ -99,7 +95,7 @@ class Mutator:
         if s:
             pos = random.randint(0, len(s) - 1)
             #random_character = chr(random.randrange(0, 127))
-            random_character = random_choose_with_weights(self.char_pool)
+            random_character = random_choose_with_weights(self.fuzzer.char_pool)
             if verbose:
                 print("Replacing character {} at pos {} with {}.".format(repr(node.symbol), pos, repr(random_character)))
             else:
