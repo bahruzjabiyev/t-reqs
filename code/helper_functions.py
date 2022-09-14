@@ -52,7 +52,7 @@ def random_choose_with_weights(possible_expansions):
     probabilities = [0]*len(possible_expansions)
     for index, expansion in enumerate(possible_expansions):
         if "prob=" in expansion:
-            probability = expansion[expansion.find("=")+1:expansion.find(")")]
+            probability = expansion[expansion.find("prob=")+5:expansion.find(")")]
             probabilities[index] = float(probability)
 
     probabilities = [(1-sum(probabilities))/probabilities.count(0) if elem == 0 else elem for elem in probabilities]
