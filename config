@@ -10,7 +10,7 @@ config.grammar = {
                 ['<request>'],
 
             '<request>':
-                ['(<request-line><base><the-rest>, opt(prob=0.9)', '<request-line>'],
+                ['(<request-line><base><the-rest>, opt(prob=0.9))', '<request-line>'],
 
             '<request-line>':
                 ['<method-name><space><uri><space><protocol><separator><version><newline>'],
