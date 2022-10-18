@@ -71,7 +71,7 @@ Whereas, in the collective mode (which is default), it starts from zero as the s
 python3 main.py -c config
 ``` 
 
-## Using for Finding HRS discrepancies
+## Finding new HTTP Request Smuggling Vectors
 HTTP Request Smuggling relies on different body parsing behaviors between servers where one server uses Transfer-Encoding header while the other prefers Content-Length header to decide the boundaries of a request body, or one server ignores a request body, whereas the other one processes it. 
 
 To analyze the body parsing of servers in response to various mutations in various forms of an HTTP request, we need to have a feedback mechanism installed on those servers to tell us about the body parsing behavior. One way of installing a feedback mechanism on a server, is to run the server in the reverse-proxy mode and have it forward requests to a "feedback provider" script running as a service. This service measures the length of the body in received requests and saves it for comparing it later with other servers.
