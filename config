@@ -10,7 +10,7 @@ config.grammar = {
                 ['<request>'],
 
             '<request>':
-                ['(<request-line><base><the-rest>, opt(prob=0.9))', '<request-line>'],
+                ['(<request-line><base><the-body>, opt(prob=0.9))', '<request-line><newline>'],
 
             '<request-line>':
                 ['<method-name><space><uri><space><protocol><separator><version><newline>'],
@@ -37,10 +37,10 @@ config.grammar = {
                 ['\r\n'],
 
             '<base>':
-                ['Host: _HOST_\r\nConnection:close\r\nX-Request-ID: _REQUEST_ID_\r\n'],
+                ['Host: _HOST_\r\nConnection:close\r\nX-Request-ID: _REQUEST_ID_\r\nContent-Length: _CONTENT_LENGTH_\r\n\r\n'],
 
-            '<the-rest>':
-                ['Content-Length: _CONTENT_LENGTH_\r\n\r\nBBBBBBBBBB'],
+            '<the-body>':
+                ['BBBBBBBBBB'],
             }
 
 # Required. Minimum number of mutations to be done
