@@ -39,6 +39,7 @@ def _parse_args():
 
     parser.add('-c', dest="config", required=True, help='config file path')
     parser.add('-i', action="store_true", dest="individual_mode", help="Turns the individual mode on where the fuzzer is run only for specified seeds.")
+    parser.add('-n', action="store_true", dest="no_sending", help="Turns the no-sending mode on where the fuzzer only generates the inputs without sending them to the targets.")
     parser.add('-s', dest="seed", type=int, help="Only needed for individual mode. Seed parameter for random number generator.")
     parser.add('-v', action="store_true", dest="verbose", help="Only needed for individual mode. Adds verbosity.")
     parser.add('-o', dest="outfilename", help = "Only needed for individual mode. File to write output.")

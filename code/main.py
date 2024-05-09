@@ -13,7 +13,7 @@ from helper_functions import _print_exception, _parse_args
 
 class Fuzzer:
 
-    def __init__(self, verbose, seed, outfilename, seedfile):
+    def __init__(self, verbose, seed, outfilename, seedfile, no_sending):
         self.read_config(args.config)
 
         self.verbose = verbose
@@ -21,6 +21,7 @@ class Fuzzer:
         self.lock = threading.Lock()
         self.outfilename = outfilename
         self.seedfile = seedfile
+        self.no_sending = no_sending
 
     def read_config(self, configfile):
         config_content = open(configfile).read().replace('config.', 'self.')
@@ -139,7 +140,10 @@ class Fuzzer:
 
             mutator = Mutator(self, base_input, seed)
             mutator.mutate_input()
-            responses = self.get_responses(seed, base_input)
+            if not self.no_sending:
+                responses = self.get_responses(seed, base_input)
+            else:
+                responses = []
             responses_list.append("{} ***** {} ***** {} ***** {}".format(seed, base_input.tree_to_request(), responses, mutator.mutation_messages))
 
         _queue.put(responses_list)
@@ -152,7 +156,10 @@ class Fuzzer:
 
             mutator = Mutator(self, base_input, seed)
             mutator.mutate_input()
-            responses = self.get_responses(seed, base_input)
+            if not self.no_sending:
+                responses = self.get_responses(seed, base_input)
+            else:
+                responses = []
             responses_list.append("{} ***** {} ***** {} ***** {}".format(seed, base_input.tree_to_request(), responses, mutator.mutation_messages))
 
         _queue.put(responses_list)
@@ -160,7 +167,7 @@ class Fuzzer:
 args = _parse_args()
 start = time.time()
 
-fuzzer = Fuzzer(args.verbose, args.seed, args.outfilename, args.seedfile)
+fuzzer = Fuzzer(args.verbose, args.seed, args.outfilename, args.seedfile, args.no_sending)
 if args.individual_mode:
     fuzzer.blackbox_fuzz_individual(fuzzer.seedfile, [fuzzer.seed])
 else:
