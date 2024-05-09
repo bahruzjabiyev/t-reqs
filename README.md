@@ -59,17 +59,31 @@ Each component can be marked in two ways: string mutable and tree mutable ([see]
 The fuzzer should be informed about the user preferences about the generation and mutation of inputs. More specifically, the input grammar, the mutable components, mutation preferences among other things should be specified in the configuration file (see an example [configuration](../main/config)). 
 
 ### Running modes
-To be able to reproduce the inputs generated and mutated in each iteration, a seed number is used. In fact, this seed number serves as a seed for random number generations during the formation and mutation of an input. Depending on how these seeds are fed into the fuzzer, it runs in one of these two modes: individual and collective. In the individual mode, inputs are generated and mutated based on the seeds specified by a user. In the command below, a single seed (i.e., 505) is specified. Alternatively, a list of seeds could be specified with *-f* option (see help page for more).
+To be able to reproduce the inputs generated and mutated in each iteration, a seed number is used. In fact, this seed number serves as a seed for random number generations during the formation and mutation of an input. Depending on how these seeds are fed into the fuzzer, it runs in one of these two modes: individual and bulk. In the individual mode, inputs are generated and mutated based on the seeds specified by a user. In the command below, a single seed (i.e., 505) is specified. Alternatively, a list of seeds could be specified with *-f* option (see help page for more).
 
 ```
 python3 main.py -i -c config -s 505
 ``` 
 
-Whereas, in the collective mode (which is default), it starts from zero as the seed value and increments it in each iteration until the end number is reached. The beginning and end numbers can be customized. 
+Whereas, in the bulk mode (which is default), it starts from zero as the seed value and increments it in each iteration until the end number is reached. The beginning and end numbers can be customized. 
 
 ```
 python3 main.py -c config
 ``` 
+
+## Dockerfile
+We are also sharing a [Dockerfile](../main/Dockerfile) for you to be able to run the t-reqs code. You can run the commands below to get started:
+```
+# run the command below under the directory which has the Dockerfile
+docker build -t test/treqs .
+
+# create a container after you built the image using the command above
+docker run -ti test/treqs bash
+
+# run the commands below in the started docker shell
+cd t-reqs/
+python3 code/main.py -c config -n -i -s90
+```
 
 ## Finding New HTTP Request Smuggling Vectors
 HTTP Request Smuggling relies on different body parsing behaviors between servers where one server uses Transfer-Encoding header while the other prefers Content-Length header to decide the boundaries of a request body, or one server ignores a request body, whereas the other one processes it. 
