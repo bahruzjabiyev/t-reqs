@@ -40,7 +40,7 @@ config.grammar = {
                 ['Host: _HOST_\r\nConnection:close\r\nX-Request-ID: _REQUEST_ID_\r\n'],
 
             '<the-rest>':
-                ['Content-Length: 5\r\n\r\nBBBBBBBBBB'],
+                ['Content-Length: _CONTENT_LENGTH_\r\n\r\nBBBBBBBBBB'],
             }
 
 # Required. Minimum number of mutations to be done

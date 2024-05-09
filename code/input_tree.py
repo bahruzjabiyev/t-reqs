@@ -75,7 +75,9 @@ class InputTree:
         if self.host_header is None:
             self.host_header = self.authority
 
-        return self.request.replace(b'_URI_', self.uri.encode('utf-8')).replace(b'_HOST_', self.host_header.encode('utf-8')).replace(b'_REQUEST_ID_', str(self.seed).encode('utf-8'))
+        body_length = len(self.request) - self.request.find(b'\r\n\r\n') - 4
+
+        return self.request.replace(b'_URI_', self.uri.encode('utf-8')).replace(b'_HOST_', self.host_header.encode('utf-8')).replace(b'_REQUEST_ID_', str(self.seed).encode('utf-8')).replace(b'_CONTENT_LENGTH_', str(body_length).encode('utf-8'))
 
     def expand_node(self, node):
         if node.is_terminal:
