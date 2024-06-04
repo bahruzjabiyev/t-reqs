@@ -17,7 +17,7 @@ class Fuzzer:
         self.read_config(args.config)
 
         self.verbose = verbose
-        self.seed = seed
+        self.seed = self.expand_seed(seed)
         self.lock = threading.Lock()
         self.outfilename = outfilename
         self.seedfile = seedfile
@@ -32,6 +32,18 @@ class Fuzzer:
 
         self.target_hosts = {self.target_urls[i]:self.target_host_headers[i] for i in range(len(self.target_urls))}
  
+    def expand_seed(self, seed_string):
+        if seed_string == None:
+            return None
+        expanded_seeds = []
+        for seed in seed_string.split(','):
+            if '-' in seed:
+                start, end = map(int, seed.split('-'))
+                expanded_seeds.extend(range(start, end + 1))
+            elif seed.isnumeric():
+                expanded_seeds.append(int(seed))
+        return expanded_seeds
+
     def send_fuzzy_data(self, inputdata, list_responses):
         try:
             request = inputdata.tree_to_request()
@@ -103,8 +115,8 @@ class Fuzzer:
                 outfile.write("\n".join(responses_list))
                 outfile.write("\n")
 
-    def blackbox_fuzz_individual(self, filename=None, seeds=[None]):
-        if seeds == [None]:
+    def blackbox_fuzz_individual(self, filename=None, seeds=None):
+        if seeds == None:
             with open(filename, 'r') as _file:
                 seeds = [int(line.strip()) for line in _file.readlines()]
 
@@ -169,7 +181,7 @@ start = time.time()
 
 fuzzer = Fuzzer(args.verbose, args.seed, args.outfilename, args.seedfile, args.no_sending)
 if args.individual_mode:
-    fuzzer.blackbox_fuzz_individual(fuzzer.seedfile, [fuzzer.seed])
+    fuzzer.blackbox_fuzz_individual(fuzzer.seedfile, fuzzer.seed)
 else:
     fuzzer.blackbox_fuzz_parallel_batch()
 
