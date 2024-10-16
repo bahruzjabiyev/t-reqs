@@ -11,7 +11,10 @@ def _parse_url(url):
     uri = '/'.join(url.split('/')[3:])
 
     if ':' not in authority:
-        port = 80
+        if 'https://' in url:
+            port = 443
+        else:
+            port = 80
         host = authority
     else:
         host, port = authority.split(':')
