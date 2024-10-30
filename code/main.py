@@ -48,9 +48,16 @@ class Fuzzer:
     def send_fuzzy_data(self, inputdata, list_responses):
         try:
             request = inputdata.tree_to_request()
-            _socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            _socket.connect((inputdata.host, int(inputdata.port)))
+            if inputdata.url.startswith('https'):
+                context = ssl.create_default_context()
+                context.check_hostname = False
+                context.verify_mode = ssl.CERT_NONE
+                _socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                _socket = context.wrap_socket(_socket, server_hostname=inputdata.host)
+            else:
+                _socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+            _socket.connect((inputdata.host, int(inputdata.port)))
             _socket.sendall(request)
             _socket.settimeout(4)
 
@@ -75,42 +82,6 @@ class Fuzzer:
             _print_exception([request])
             raise exception
 
-    def send_fuzzy_data_secure(self, inputdata, list_responses):
-        try:
-            request = inputdata.tree_to_request()
-            context = ssl.create_default_context()
-            context.check_hostname = False
-            context.verify_mode = ssl.CERT_NONE
-
-            _socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            _s_socket = context.wrap_socket(_socket, server_hostname=inputdata.host)
-
-            _s_socket.connect((inputdata.host, int(inputdata.port)))
-            _s_socket.sendall(request)
-            _s_socket.settimeout(4)
-
-            response = b''
-            while True:
-                data = _s_socket.recv(2048)
-                if not data:
-                    break
-                else:
-                    response += data
-
-            _s_socket.shutdown(socket.SHUT_RDWR)
-            _s_socket.close()
-            _socket.close()
-
-            with self.lock:
-                list_responses.append(response)
-        except socket.timeout:
-            with self.lock:
-                list_responses.append(b"takes too long")
-
-        except Exception as exception:
-            _print_exception([request])
-            raise exception
-
     def get_responses(self, seed, request):
         threads = []
         list_responses = []
@@ -120,10 +91,7 @@ class Fuzzer:
             request.host_header = self.target_hosts[target_url]
 
             request_copy = copy.deepcopy(request)
-            if request.url.startswith("https"):
-                thread = threading.Thread(target=self.send_fuzzy_data_secure, args=(request_copy, list_responses))
-            else:
-                thread = threading.Thread(target=self.send_fuzzy_data, args=(request_copy, list_responses))
+            thread = threading.Thread(target=self.send_fuzzy_data, args=(request_copy, list_responses))
             threads.append(thread)
             thread.start()
 
